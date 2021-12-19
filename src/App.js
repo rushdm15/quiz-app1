@@ -32,12 +32,27 @@ function App() {
   return (
     <main>
       <section className="quiz">
-        <p className="correction-answers">correct answers: 3</p>
+        <p className="correction-answers">
+          correct answers: {correct}/{index}
+        </p>
         <article className="container">
-          <h2>Text</h2>
-          <div className="btn-container"></div>
+          <h2 dangerouslySetInnerHTML={{ __html: question }} />
+          <div className="btn-container">
+            {answer.map((answer, index) => {
+              return (
+                <button
+                  key={index}
+                  className="answer-btn"
+                  onClick={() => checkAnswer(correct_answer === answer)}
+                  dangerouslySetInnerHTML={{ __html: answer }}
+                />
+              );
+            })}
+          </div>
         </article>
-        <button className="next-question">next questions</button>
+        <button className="next-question" onClick={nextQuestions}>
+          next questions
+        </button>
       </section>
     </main>
   );
