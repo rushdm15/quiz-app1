@@ -1,5 +1,5 @@
 import { useState, useContext, createContext } from "react";
-import axios from axios;
+import axios from "axios";
 
 const table = {
     sports: 19,
@@ -10,7 +10,7 @@ const table = {
 const AppContext = createContext();
 const AppProvider = ({children}) => {
     const [waiting, setWaiting] = useState(true) //waiting
-    const [loaded, setLoading] = useState(false) //Loading
+    const [loading, setLoading] = useState(false) //Loading
     const [question, setQuestions] = useState([]) //questions
      const [index, setIndex] = useState(0) //index
      const [correct, setCorrect] = useState(0) //correct
@@ -27,6 +27,7 @@ const AppProvider = ({children}) => {
         setLoading(true);
         setWaiting(false);
         const response = await axios(url).catch((err)=>console.log(err));
+
         if(response){
             const data = response.data.results;
             if(data.length){
@@ -97,4 +98,4 @@ export const useGlobalContext = () => {
     return useContext(AppContext);
 };
 
-export {AppContext, AppContext};
+export {AppContext, AppProvider};
