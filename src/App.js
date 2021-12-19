@@ -27,7 +27,7 @@ function App() {
     answers.push(correct_answer);
   } else {
     answers.push(answers[tempIndex]);
-    answers[temp] = correct_answer;
+    answers[tempIndex] = correct_answer;
   }
   return (
     <main>
@@ -38,7 +38,7 @@ function App() {
         <article className="container">
           <h2 dangerouslySetInnerHTML={{ __html: question }} />
           <div className="btn-container">
-            {answer.map((answer, index) => {
+            {answers.map((answer, index) => {
               return (
                 <button
                   key={index}
