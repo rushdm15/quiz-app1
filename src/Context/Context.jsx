@@ -55,15 +55,27 @@ const AppProvider = ({children}) => {
 
     const nextQuestion = () => {
         setIndex((oldIndex)=>{
-            const index = oldIndex+1;
+            const index = oldIndex + 1;
             if(index > oldIndex.length -1){
-                openModal()
+                openModal();
                 return 0;
             } else {
                 return index;
             }
         });
     };
+    const checkAnswers = (value) => {
+        if(value) {
+            setCorrect((oldState) => oldState + 1);
+        }
+        nextQuestion();
+    };
+
+    const handleChange = (e) =>{
+        const name = e.target.name;
+        const value = e.target.value;
+        setQuiz({...quiz, [name]: value })
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -72,7 +84,10 @@ const AppProvider = ({children}) => {
     }
 
     return(
-        <AppContext.Provider>
+        <AppContext.Provider value={
+            waiting, loading, question, index, correct, error, modal, nextQuestion,
+             checkAnswers, closeModal, quiz, handleChange, handleSubmit
+        }>
             {children}
         </AppContext.Provider>
     )
