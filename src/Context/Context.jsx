@@ -5,32 +5,32 @@ const table = {
     sports: 19,
     history: 23,
     politics: 24
-}
+};
 
 const AppContext = createContext();
 const AppProvider = ({children}) => {
     const [waiting, setWaiting] = useState(true) //waiting
     const [loading, setLoading] = useState(false) //Loading
-    const [question, setQuestions] = useState([]) //questions
-     const [index, setIndex] = useState(0) //index
-     const [correct, setCorrect] = useState(0) //correct
-     const [error, setError]  = useState(false) //error
+    const [questions, setQuestions] = useState([]) //questions
+    const [index, setIndex] = useState(0) //index
+    const [correct, setCorrect] = useState(0) //correct
+    const [error, setError]  = useState(false) //error
     const [quiz, setQuiz] = useState({ 
         amount: 10, 
         category: "sports",
-        difficulty: "ease"
+        difficulty: "easy"
     }); 
     const [modal, setModal] = useState(false);
     //fetchQuestions
 
-    const fetchQuestions = async(url) => {
+    const fetchQuestions = async (url) => {
         setLoading(true);
         setWaiting(false);
         const response = await axios(url).catch((err)=>console.log(err));
 
         if(response){
             const data = response.data.results;
-            if(data.length){
+            if(data.length > 0){
                 setQuestions(data);
                 setLoading(false);
                 setWaiting(false);
@@ -57,7 +57,7 @@ const AppProvider = ({children}) => {
     const nextQuestion = () => {
         setIndex((oldIndex)=>{
             const index = oldIndex + 1;
-            if(index > oldIndex.length -1){
+            if(index > questions.length -1){
                 openModal();
                 return 0;
             } else {
@@ -82,13 +82,27 @@ const AppProvider = ({children}) => {
         e.preventDefault();
         const { amount, difficulty, category } = quiz;
         const url = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&category=${table[category]}&type=multiple`;
-    }
+        fetchQuestions(url);
+      };
 
     return(
-        <AppContext.Provider value={
-            waiting, loading, question, index, correct, error, modal, nextQuestion,
-             checkAnswers, closeModal, quiz, handleChange, handleSubmit
-        }>
+        <AppContext.Provider 
+          value={{
+            waiting, 
+            loading, 
+            questions, 
+            index, 
+            correct, 
+            error, 
+            modal, 
+            nextQuestion,
+            checkAnswers, 
+            closeModal, 
+            quiz, 
+            handleChange, 
+            handleSubmit
+        }}
+        >
             {children}
         </AppContext.Provider>
     )
